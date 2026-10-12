@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { findDesignPart, type DesignPartRef } from "./design";
 import { findGuideRule, type GuideRuleRef } from "./guide";
 
 /**
@@ -20,7 +21,7 @@ export type Task = {
    * key আলাদা; কাজ আগে-পরে যোগ করলে টিক টেকে, কিন্তু লেখা বদলালে ঐ টিক হারায়।
    */
   id: string;
-  /** মিনিট, ⚑, 🔁, `(rule · …)` আর 🧠 (…) বাদে বাকি markdown */
+  /** মিনিট, ⚑, 🔁, `(rule · …)`, `(design · …)` আর 🧠 (…) বাদে বাকি markdown */
   text: string;
   /** শুরুর `৩০′` — না থাকলে `null` */
   minutes: number | null;
@@ -36,6 +37,11 @@ export type Task = {
    * আন্দাজের পরে পড়াটা কাজেরই অংশ। 🧠 Test yourself
    */
   rule: GuideRuleRef | null;
+  /**
+   * `(design · catalog)` থাকলে — Pagila-র কোন অংশের ER diagram আঁকার দিন। কার্ডে ঐ
+   * অংশের `CREATE TABLE`; মেলানোর উত্তর design পাতার ভাঁজে, টিক থাকলে নিজে খোলে।
+   */
+  design: DesignPartRef | null;
 };
 
 export type Day = {
@@ -102,6 +108,8 @@ const MINUTES_RE = /^([০-৯0-9]+)′\s*/;
 const DIP_RE = /\s*·\s*dip\s*$/;
 /** `(rule · schema-primary-keys)` — `guide/`-এর ফাইলনাম, `.md` বাদে */
 const RULE_RE = /\s*\(rule\s+·\s+([a-z0-9-]+)\)/;
+/** `(design · catalog)` — `design/parts.md`-এর অংশের slug */
+const DESIGN_RE = /\s*\(design\s+·\s+([a-z0-9-]+)\)/;
 
 function parseRule(dayCode: string, raw: string): GuideRuleRef | null {
   const match = RULE_RE.exec(raw);
@@ -109,6 +117,14 @@ function parseRule(dayCode: string, raw: string): GuideRuleRef | null {
   const ref = findGuideRule(match[1]);
   /* ভুল নাম build-এই ধরা পড়ুক — সাইটে ভাঙা লিংক নয় */
   if (!ref) throw new Error(`docs: দিন ${dayCode}-এর rule (${match[1]}) guide/-এ নেই`);
+  return ref;
+}
+
+function parseDesign(dayCode: string, raw: string): DesignPartRef | null {
+  const match = DESIGN_RE.exec(raw);
+  if (!match) return null;
+  const ref = findDesignPart(match[1]);
+  if (!ref) throw new Error(`docs: দিন ${dayCode}-এর design (${match[1]}) design/parts.md-এ নেই`);
   return ref;
 }
 
@@ -127,12 +143,13 @@ function parseTask(dayCode: string, raw: string): Task {
 
   return {
     id: `d${dayCode}-${hash(raw)}`,
-    text: text.replace(RULE_RE, "").replace(/\s*⚑\s*/g, " ").replace(/\s*🔁/g, "").trim(),
+    text: text.replace(RULE_RE, "").replace(DESIGN_RE, "").replace(/\s*⚑\s*/g, " ").replace(/\s*🔁/g, "").trim(),
     minutes: minutes ? Number(toAsciiDigits(minutes[1])) : null,
     principles,
     milestone: raw.includes("⚑"),
     repeat: raw.includes("🔁"),
     rule: parseRule(dayCode, raw),
+    design: parseDesign(dayCode, raw),
   };
 }
 
@@ -294,6 +311,18 @@ export function getRuleDays(): Record<string, RuleDay[]> {
     for (const task of day.tasks) {
       if (!task.rule) continue;
       (map[task.rule.slug] ??= []).push({ code: day.code, label: day.label, taskId: task.id });
+    }
+  }
+  return map;
+}
+
+/** design অংশের slug → plan-এর যে দিন আর কাজে আছে, design পাতার জন্য */
+export function getDesignDays(): Record<string, RuleDay[]> {
+  const map: Record<string, RuleDay[]> = {};
+  for (const day of getDays()) {
+    for (const task of day.tasks) {
+      if (!task.design) continue;
+      (map[task.design.slug] ??= []).push({ code: day.code, label: day.label, taskId: task.id });
     }
   }
   return map;

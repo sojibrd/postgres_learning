@@ -1,10 +1,10 @@
 # নিয়ম — Postgres, rule ধরে প্রথম পরিচয়
 
-*৩৫ দিন · ৩১টা rule আর ৪টা ⚑ · দিনে একটা, ১০′*
+*৩৯ দিন · ৩১টা rule, ৪টা design দিন আর ৪টা ⚑ · দিনে একটা, ১০′*
 
 ## লক্ষ্য
 
-> **৩৫ দিনে Postgres-এর ৩১টা best practice-এর প্রতিটায় Correct SQL-টা পড়ার পরে বন্ধ করে নিজে লিখতে পারা, আর "কেন" ইংরেজিতে নিজের কথায় বলতে পারা — ঝালাইসহ।**
+> **৩৯ দিনে Postgres-এর ৩১টা best practice-এর প্রতিটায় Correct SQL-টা পড়ার পরে বন্ধ করে নিজে লিখতে পারা, "কেন" ইংরেজিতে নিজের কথায় বলতে পারা, আর একটা schema-র ER diagram কাগজে আঁকতে পারা — ঝালাইসহ।**
 
 এটা SQL গোড়া থেকে শেখানোর সাইট নয়, আবার জানা জিনিসের "কেন" ঝালানোরও নয়: এখানে প্রতিটা rule প্রথম পরিচয়। তাই না দেখে ঠিকটা লেখা নয় — ক্রমটা আন্দাজ → পড়া → বন্ধ করে লেখা। 🧠 (Test yourself · Active vs Passive learning)
 
@@ -16,7 +16,8 @@
 
 1. `guide/` — `supabase-postgres-best-practices` skill-এর ৩১টা rule ফাইল, হুবহু ইংরেজিতে। লেখক, সংস্করণ আর লাইসেন্স `guide/README.md`-এ; সেকশনের নাম আর ক্রম `guide/_sections.md`-এ।
 2. `docs/` — এই plan: নিয়ম আর ৪টা ব্লক।
-3. ⚑ দিনের প্রশ্ন — ব্লক ২-এরটা `brainstorming/system-design.md` থেকে ("SQL না NoSQL, index কেন লাগে"); বাকি তিনটায় ব্লকের rule-ই প্রশ্ন।
+3. `design/` — design দিনের উৎস: Pagila-র `pagila-schema.sql` আর `LICENSE.txt` হুবহু, আর `parts.md`-এ এই সাইটের নিজের ভাগ — কোন অংশে কোন table। উৎস, commit আর licence `design/README.md`-এ।
+4. ⚑ দিনের প্রশ্ন — ব্লক ২-এরটা `brainstorming/system-design.md` থেকে ("SQL না NoSQL, index কেন লাগে"); বাকি তিনটায় ব্লকের rule-ই প্রশ্ন।
 
 ## উৎসটা কী, কী নয়
 
@@ -31,14 +32,14 @@
 
 | দিন | rule | rule-এ লেখা ঠিকানা | ফল |
 |---|---|---|---|
-| ০১৩ | `monitor-explain-analyze` | `supabase.com/docs/guides/database/inspect` | খোলে — সাইট নিজে নিয়ে যায় `/docs/guides/observability/inspect`-এ |
-| ০১৫ | `monitor-vacuum-analyze` | `supabase.com/docs/guides/database/database-size#vacuum-operations` | **404** — পাতাটা নেই |
-| ০২৭ | `data-pagination` | `supabase.com/docs/guides/database/pagination` | **404** — পাতাটা নেই |
+| ০১৪ | `monitor-explain-analyze` | `supabase.com/docs/guides/database/inspect` | খোলে — সাইট নিজে নিয়ে যায় `/docs/guides/observability/inspect`-এ |
+| ০১৬ | `monitor-vacuum-analyze` | `supabase.com/docs/guides/database/database-size#vacuum-operations` | **404** — পাতাটা নেই |
+| ০৩০ | `data-pagination` | `supabase.com/docs/guides/database/pagination` | **404** — পাতাটা নেই |
 
 ## কীভাবে পড়বেন
 
-- ৩৫ দিন, ৪টা ব্লক — শেখার ক্রমে: Schema → Query আর index → Security আর locking → Data আর connection। উৎসের সেকশন ভাঙা হয়নি, শুধু ক্রম বদলেছে; সেকশনের ভেতরে rule ফাইলনামের ক্রমে, কারণ উৎস নিজে কোনো ক্রম লেখেনি।
-- প্রতিটা দিনে একটা rule, একটা `- [ ]` কাজ, আর শেষে **দিন শেষে** প্রশ্ন — হ্যাঁ/না। ব্লকের শেষ দিনটা ⚑।
+- ৩৯ দিন, ৪টা ব্লক — শেখার ক্রমে: Schema → Query আর index → Security আর locking → Data আর connection। উৎসের সেকশন ভাঙা হয়নি, শুধু ক্রম বদলেছে; সেকশনের ভেতরে rule ফাইলনামের ক্রমে, কারণ উৎস নিজে কোনো ক্রম লেখেনি।
+- প্রতিটা দিনে একটা rule, একটা `- [ ]` কাজ, আর শেষে **দিন শেষে** প্রশ্ন — হ্যাঁ/না। ব্লকের শেষ দিনটা ⚑, তার আগের দিনটা design দিন।
 - `১০′` = মিনিট।
 - কাজের নিচে rule-এর **Incorrect SQL**, আর "আগে আন্দাজ → Correct আর ব্যাখ্যা" লিংক। লিংকটা টিকের আগেই থাকে, কারণ পড়াটা কাজেরই অংশ — কিন্তু আন্দাজের পরে। 🧠 (Test yourself)
 - `impact` chip = উৎসে rule-টার গুরুত্ব, CRITICAL থেকে LOW।
@@ -51,7 +52,7 @@
 ফাইলে তারিখ নেই, শুধু দিনের নম্বর। প্রথমবার সাইট খুললে শুরুর তারিখ জিজ্ঞেস করে। তারপর থেকে দিন = শুরু থেকে কত দিন।
 
 - **plan পেছায় না।** কাল বাদ পড়লে আজ আজকের rule, দুটো নয়।
-- **বাদ পড়া rule ফেরে না** — গাইডে থাকে, দিন ০৩৫-এর পরে ধরতে পারেন।
+- **বাদ পড়া rule ফেরে না** — গাইডে থাকে, দিন ০৩৯-এর পরে ধরতে পারেন।
 - **ঘুম কেটে পূরণ নয়।** 🧠 (The science of sleep)
 
 ## কখন বসবেন ⏳
@@ -73,6 +74,28 @@
 
 সাইটে নোটের ঘর নেই, ইচ্ছা করেই; আন্দাজটা খাতায়।
 
+## Design দিন — ER diagram, কাগজে
+
+প্রতিটা ব্লকে ⚑-এর আগের দিন। rule নয়, একটা schema-র ER diagram আঁকা: প্রতিটা table একটা বাক্স, ভেতরে column; primary key আর foreign key চিহ্নিত; সম্পর্কের রেখা। কোনো tool নয় — কাগজ আর কলম। 🧠 (The power of senses)
+
+| দিন | ব্লক | কী আঁকবেন | মেলাবেন কীসের সাথে |
+|---|---|---|---|
+| ০০৭ | Schema | Pagila-র Catalog — `film`, `language`, `category`, `actor`, `film_actor`, `film_category` | design পাতার উত্তর |
+| ০১৭ | Query আর index | Pagila-র মানুষ আর ঠিকানা — `country`, `city`, `address`, `store`, `staff`, `customer` | design পাতার উত্তর |
+| ০২৬ | Security আর locking | Pagila-র লেনদেন — `inventory`, `rental`, `payment` | design পাতার উত্তর, তারপর Pagila-র অফিসিয়াল পুরো ছবি |
+| ০৩৮ | Data আর connection | `leave_management`-এর নিজের relational schema | কিছুর সাথে নয় — উত্তর কোথাও নেই |
+
+**Pagila-র দিনে (১৫′):**
+
+1. কার্ডে অংশের `CREATE TABLE`-গুলো। foreign key ওখানে নেই — Pagila সেগুলো আলাদা `ALTER TABLE`-এ লেখে। কোন table কাকে ধরে, `_id` column দেখে আন্দাজ করে রেখা টানাটাই অনুশীলন।
+2. পুরো diagram কাগজে, design পাতা না খুলে।
+3. design পাতায় "মেলানোর উত্তর" খুলুন — ঐ অংশের primary key, foreign key, কোন foreign key খালি থাকতে পারে, সংযোগ-table, আর `_id`-এ শেষ কিন্তু foreign key নয় এমন column। উত্তর শুধু ঐ অংশের, যাতে পরের অংশ আগে চোখে না পড়ে। পুরোটা Pagila-র SQL থেকে build-এর সময় বানানো।
+4. যেটা মেলেনি, কাগজেই ঠিক করুন; টিক দিন। 🔁 ঝালাইয়ে না দেখে আবার আঁকা।
+
+**`leave_management`-এর দিনে (২০′):** অ্যাপের data — ছুটির আবেদন, ছুটির ধরন, আর একটা settings-এর ভেতরে একসাথে রাখা কর্মীর তথ্য, সাপ্তাহিক ছুটি আর ছুটির দিনের তালিকা — Postgres-এ রাখলে table কী কী হবে, নিজে design করুন। settings-এর কোন অংশ আলাদা table হওয়া উচিত, এক লাইনে কেন। এর উত্তর নেই, ঝালাইও নেই। অ্যাপের কোডে এখন হাত নয় — সেটা ২০২৮-এর শেষে।
+
+Pagila-র লেনদেন অংশে আগের দুটো rule আবার আসে: `payment` `payment_date` ধরে partition করা (দিন ০০৫), আর তার `uuid` column-এ `uuidv7()` (দিন ০০৬)।
+
 ## ঝালাই
 
 - 🔁 কাজে টিক দিলে ঐ **আসল তারিখ** থেকে ১ → ৩ → ৭ → ২১ দিন। 🧠 (Spaced repetition revisited)
@@ -86,10 +109,10 @@
 
 | দিন | ব্লক | প্রশ্ন |
 |---|---|---|
-| ০০৭ | Schema | ব্লকের তিনটা rule-এর "কেন" |
-| ০১৬ | Query আর index | SQL না NoSQL, আর index কেন লাগে — দ্বিতীয় অংশে ব্লকের rule থেকে অন্তত দুটো উদাহরণ; প্রথম অংশ আপনার নিজের উত্তর |
-| ০২৪ | Security আর locking | ব্লকের তিনটা rule — দুই সেকশনের প্রতিটা থেকে অন্তত একটা |
-| ০৩৫ | Data আর connection | ব্লকের তিনটা rule — Data access আর Connection থেকে অন্তত একটা করে |
+| ০০৮ | Schema | ব্লকের তিনটা rule-এর "কেন" |
+| ০১৮ | Query আর index | SQL না NoSQL, আর index কেন লাগে — দ্বিতীয় অংশে ব্লকের rule থেকে অন্তত দুটো উদাহরণ; প্রথম অংশ আপনার নিজের উত্তর |
+| ০২৭ | Security আর locking | ব্লকের তিনটা rule — দুই সেকশনের প্রতিটা থেকে অন্তত একটা |
+| ০৩৯ | Data আর connection | ব্লকের তিনটা rule — Data access আর Connection থেকে অন্তত একটা করে |
 
 ## গাইডের পাতা
 
@@ -101,10 +124,10 @@
 
 - **এক দিনে একাধিক rule নয়।** working memory-তে একসাথে চারটার বেশি ধরে না। 🧠 (Long and short memory)
 - **আন্দাজের আগে Correct নয়।** আগে এক লাইনের আন্দাজ, তারপর পড়া — কাজের ক্রমটা এটাই।
-- **SQL চালিয়ে দেখতে database বা sandbox বানানো নয়।** এই plan-এ নেই, ইচ্ছা করেই; হাতে-কলমের কাজ `leave_management`-এ, ২০২৮-এর শেষে।
+- **SQL চালিয়ে দেখতে, বা diagram আঁকতে, database, sandbox বা diagram-এর tool বানানো নয়।** এই plan-এ নেই, ইচ্ছা করেই; হাতে-কলমের কাজ `leave_management`-এ, ২০২৮-এর শেষে।
 - **নতুন rule, নতুন দাবি বা নতুন ফিচার নয়।** ইচ্ছে হলে এক লাইনে লিখে রাখুন, বানাবেন না।
 
-## দিন ০৩৫-এর পরে
+## দিন ০৩৯-এর পরে
 
 - 🔁 ঝালাই হোমে আসতেই থাকবে, যতদিন বাকি।
 - বাদ পড়া rule গাইড থেকে একটা একটা করে — একই বসা, একই ১০′।

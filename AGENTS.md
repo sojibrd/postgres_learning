@@ -1,6 +1,6 @@
 # postgres_learning — Agent Instructions
 
-Postgres-এর best practice-এর দিনভিত্তিক সাইট — ৩৫ দিন: ৩১ দিনে একটা করে rule, প্রতি ব্লকের শেষে একটা ⚑। chassis `nestjs_learning` থেকে (২০২৬-১০-১২); তিন repo-র পরিবার নয়, একটাই সাইট।
+Postgres-এর best practice-এর দিনভিত্তিক সাইট — ৩৯ দিন: ৩১ দিনে একটা করে rule, প্রতি ব্লকে ⚑-এর আগে একটা design দিন (ER diagram, কাগজে), আর ব্লকের শেষে একটা ⚑। chassis `nestjs_learning` থেকে (২০২৬-১০-১২); তিন repo-র পরিবার নয়, একটাই সাইট।
 
 - **`guide/` = ৩১টা rule ফাইল**, Supabase-এর `supabase-postgres-best-practices` skill-এর `references/` থেকে হুবহু (ইংরেজি; লেখক, upstream commit আর লাইসেন্স `guide/README.md`-এ)। **সম্পাদনা নয়** — উৎস বদলালে নতুন কপি। উৎসটা এই workspace-এর `.claude/skills/`-এ **নেই**; কপি হয়েছে GitHub থেকে। route `/guide/<ফাইলনাম>/`; সেকশন `_sections.md` থেকে, ফাইলনামের প্রথম অংশ ধরে।
 - **`docs/` = plan** — `00-rules.md` আর ৪টা ব্লক, **শেখার ক্রমে** (উৎসের impact-এর ক্রমে নয়): Schema → Query আর index (`query` + `monitor`) → Security আর locking → Data আর connection (`data` + `conn` + `advanced`)। সেকশন ভাঙা হয়নি। সেকশনের ভেতরে **ফাইলনামের** ক্রম — উৎস নিজে কোনো ক্রম লেখেনি। দিনের নম্বর পরপর না হলে build ভাঙে; ফাইলে তারিখ নেই, "আজ" = ক্যালেন্ডারের তারিখ।
@@ -15,7 +15,10 @@ Postgres-এর best practice-এর দিনভিত্তিক সাইট
 - 🧠 নাম → `app/lib/principles.ts`, `learning_to_learn`-এর ঐ ফাইলের কপি (৫৭টা বিষয়), লিংক ঐ সাইটের লাইভ Pages-এ। ওখানে বদলালে এখানেও।
 - Progress চার key (`postgres:v1:start`, `task`, `check`, `review`) — একমাত্র `app/hooks/useProgress.ts` দিয়ে; পঞ্চম key `postgres:v1:meta` শুধু sync-এর timestamp। কাজের লেখা বদলালে ঐ কাজের টিক হারায় (id = দিন + লেখার hash)।
 - **Cross-device sync** — বাকি সাইটের মতোই: `app/lib/supabase.ts`, `app/hooks/useSync(Key).ts`, `app/components/SyncSettings.tsx`, `app/sync/page.tsx` chassis থেকে হুবহু, নিজে থেকে বদলাবেন না। `site_prefix` = `SITE.storagePrefix` = `postgres`। `deploy.yml`-এর env নাম `NEXT_PUBLIC_SUPABASE_*` — বদলালে sync চুপচাপ মরে যাবে। **লাইভ ২০২৬-১০-১২** — deployed chunk-এ Supabase-এর URL আর anon key `learning_to_learn`-এরটার সাথে মিলিয়ে দেখা, আর দুই device-এর push/pull একটা ফেলে-দেওয়া key দিয়ে পরীক্ষা করা (দুই দিকেই পাশ)।
-- `app/lib/plan.ts` আর `app/lib/guide.ts` server-only।
+- **design দিন (২০২৬-১০-১২)** — ব্যবহারকারীর সিদ্ধান্তে প্রতিটা ব্লকে ⚑-এর আগে; তাতে দিন ০০৭ থেকে পরের সব দিনের নম্বর সরেছে (দিন ০০১–০০৬-এর টিক অক্ষত, পরেরগুলো হারিয়েছে)। তিনটা Pagila-র অংশ, শেষটা `leave_management`-এর নিজের schema (উত্তর নেই, 🔁 নেই)। কাজে `(design · <অংশ>)` = `design/parts.md`-এর অংশ; না মিললে build ভাঙে। কার্ডে অংশের `CREATE TABLE` হুবহু; উত্তর (`/design/<অংশ>/`-এর ভাঁজে) পুরোটা `app/lib/design.ts` Pagila-র SQL থেকে build-এ বানায় — হাতে লেখা কোনো দাবি নয়, আর শুধু ঐ অংশের, যাতে পরের অংশ আগে চোখে না পড়ে।
+- **`design/` = Pagila** — `pagila-schema.sql` আর `LICENSE.txt` হুবহু, commit `ce6e114` থেকে; **সম্পাদনা নয়**। PostgreSQL License — copyright notice আর licence-এর লেখা কপির সাথে থাকতেই হবে, আর প্রতিটা design পাতার নিচে attribution (`parts.md`-এর মাথার অনুচ্ছেদ থেকে)। `parts.md` এই সাইটের নিজের ভাগ।
+- diagram আঁকা হয় কাগজে — সাইটে diagram-এর কোনো tool বা library বসাবেন না।
+- `app/lib/plan.ts`, `app/lib/guide.ts` আর `app/lib/design.ts` server-only।
 - **Theme contract অলঙ্ঘনীয়**, সাইট **dark-only**। code block-এ syntax highlighting নেই — chassis-এর `.doc-prose pre`।
 
 <!-- BEGIN:nextjs-agent-rules -->

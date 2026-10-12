@@ -18,6 +18,9 @@ import { useMounted, useProgress } from "../hooks/useProgress";
  * যে rule-এ Incorrect নেই (`kind: "example"`), সেখানে কোডের জায়গায় বর্ণনা আর
  * "Correct"-এর জায়গায় "উদাহরণ"।
  *
+ * design-এর কাজে Pagila-র অংশের `CREATE TABLE` আর design পাতার লিংক — একই নিয়মে,
+ * লিংক টিকের আগেই: আগে কাগজে আঁকা, তারপর উত্তর খুলে মেলানো।
+ *
  * `from` দিলে কাজটা অন্য দিনের — হোমের জমে থাকা মাইলফলকে দিনের লিংক দেখায়।
  */
 export default function TaskItem({ task, from }: { task: Task; from?: { code: string; label: string } }) {
@@ -28,6 +31,7 @@ export default function TaskItem({ task, from }: { task: Task; from?: { code: st
   const doneOn = checked ? taskDoneDate(task.id) : null;
   const doneToday = doneOn !== null && doneOn === todayISO();
   const rule = task.rule;
+  const design = task.design;
   const answer = rule?.kind === "example" ? "উদাহরণ" : "Correct";
 
   return (
@@ -47,6 +51,7 @@ export default function TaskItem({ task, from }: { task: Task; from?: { code: st
         </Markdown>
 
         {rule && <Markdown className="mt-3 text-sm">{rule.problem}</Markdown>}
+        {design && <Markdown className="mt-3 text-sm">{design.sql}</Markdown>}
 
         <div className="mt-2 flex flex-wrap gap-1.5">
           {task.minutes !== null && <span className="chip">{toBnDigits(task.minutes)}′</span>}
@@ -72,6 +77,15 @@ export default function TaskItem({ task, from }: { task: Task; from?: { code: st
               title={checked ? undefined : "আগে এক লাইনে আন্দাজ করুন কী ভুল — তারপর খুলুন"}
             >
               {checked ? `${answer} আর ব্যাখ্যা` : `আগে আন্দাজ → ${answer} আর ব্যাখ্যা`}
+            </Link>
+          )}
+          {design && (
+            <Link
+              href={`/design/${design.slug}/`}
+              className="chip chip--accent"
+              title={checked ? undefined : "আগে কাগজে পুরো diagram আঁকুন — তারপর খুলুন"}
+            >
+              {checked ? "মেলানোর উত্তর" : "আগে আঁকুন → মেলানোর উত্তর"}
             </Link>
           )}
           {checked && (

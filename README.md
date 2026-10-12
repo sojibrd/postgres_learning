@@ -1,6 +1,6 @@
 # postgres_learning
 
-Postgres-এর ৩১টা best practice, ৩৫ দিনে। দিনে একটা rule, ১০′: সাইট rule-এর Incorrect SQL দেখায়; আপনি আগে আন্দাজ করেন কী ভুল, গাইডে Correct আর ব্যাখ্যা পড়েন, বন্ধ করে Correct-টা নিজে লেখেন, আর "কেন" ইংরেজিতে বলেন। SQL গোড়া থেকে শেখানোর সাইট নয় — rule ধরে প্রথম পরিচয়।
+Postgres-এর ৩১টা best practice আর ৪টা ER diagram, ৩৯ দিনে। দিনে একটা rule, ১০′: সাইট rule-এর Incorrect SQL দেখায়; আপনি আগে আন্দাজ করেন কী ভুল, গাইডে Correct আর ব্যাখ্যা পড়েন, বন্ধ করে Correct-টা নিজে লেখেন, আর "কেন" ইংরেজিতে বলেন। SQL গোড়া থেকে শেখানোর সাইট নয় — rule ধরে প্রথম পরিচয়। প্রতিটা ব্লকে ⚑-এর আগে একটা design দিন: একটা schema-র ER diagram কাগজে আঁকা।
 
 rule-গুলো Supabase-এর `supabase-postgres-best-practices` skill থেকে হুবহু নেওয়া — লেখক আর লাইসেন্স [guide/README.md](guide/README.md)-এ। গড়ন [nestjs_learning](https://sojibrd.github.io/nestjs_learning/)-এর মতো।
 
@@ -12,6 +12,8 @@ rule-গুলো Supabase-এর `supabase-postgres-best-practices` skill থ�
 - **Rail:** সব পাতায় বাঁয়ে rail থাকে, মোবাইলে drawer। তাতে ৪টা পাতার লিংক, plan-এর gauge আর ৪টা ব্লক। শুধু খোলা ব্লকের দিনগুলো দেখায়।
 - **দিন (`/day/<nnn>/`) · ব্লক (`/block/<slug>/`):** দিনের কাজ আর দিন বা ব্লক শেষের হ্যাঁ/না।
 - **rule-এর কাজ:** কাজের নিচে ঐ rule-এর Incorrect SQL, `impact`, আর গাইডের লিংক — "আগে আন্দাজ → Correct আর ব্যাখ্যা"। লিংকটা টিকের আগেই থাকে।
+- **design-এর কাজ:** কাজের নিচে Pagila-র ঐ অংশের `CREATE TABLE`, আর লিংক "আগে আঁকুন → মেলানোর উত্তর"। চতুর্থটা (`leave_management`-এর schema) শুধু লেখা — উত্তর নেই।
+- **Design (`/design/<অংশ>/`):** অংশের SQL খোলা, মেলানোর উত্তর (primary key, foreign key, partition) ভাঁজ করা; ঐ কাজে টিক থাকলে ভাঁজ নিজে খোলে। নিচে Pagila-র attribution।
 - **গাইড (`/guide/`, `/guide/<slug>/`):** ৩১টা rule উৎসের ৮ সেকশন ধরে, পাশে plan-এর দিন। rule-এর পাতায় Incorrect SQL খোলা, পুরো rule ভাঁজ করা; ঐ কাজে টিক থাকলে ভাঁজ নিজে খোলে।
 - **ঝালাই (`/review/`):** প্রতিটা 🔁 কাজ টিকের দিন থেকে ১/৩/৭/২১ দিন পরে ফেরে।
 - **নিয়ম (`/rules/`):** `docs/00-rules.md` হুবহু — Reference লিংকের পরীক্ষার ফল সহ।
@@ -20,13 +22,14 @@ rule-গুলো Supabase-এর `supabase-postgres-best-practices` skill থ�
 
 ## Non-Functional Requirement
 
-- **সত্যের উৎস `docs/` আর `guide/`।** কোডে কোনো দিন, কাজ বা rule হার্ডকোড নেই। কাজের `(rule · <ফাইলনাম>)` যদি `guide/`-এ না মেলে, **build ভাঙে।**
-- **`guide/` সম্পাদনা হয় না।** উৎসের হুবহু কপি; সাইট Postgres নিয়ে নিজের কোনো rule বা ব্যাখ্যা যোগ করে না।
+- **সত্যের উৎস `docs/`, `guide/` আর `design/`।** কোডে কোনো দিন, কাজ, rule বা table হার্ডকোড নেই। কাজের `(rule · <ফাইলনাম>)` যদি `guide/`-এ না মেলে, বা `(design · <অংশ>)` যদি `design/parts.md`-এ না মেলে, **build ভাঙে।**
+- **`guide/` আর Pagila-র ফাইল সম্পাদনা হয় না।** উৎসের হুবহু কপি; সাইট Postgres নিয়ে নিজের কোনো rule বা ব্যাখ্যা যোগ করে না। design-এর উত্তরও Pagila-র SQL থেকে build-এ বানানো।
 - **Correct কার্ডে পাঠানো হয় না।** দিনের কার্ডে যায় শুধু Incorrect অংশ; পুরো rule থাকে নিজের পাতায়, ভাঁজের ভেতরে।
 - **ফাইলে তারিখ নেই।** তারিখ = শুরুর তারিখ + (দিন − ১)। "আজ" মানে ক্যালেন্ডারের তারিখ, plan পেছায় না।
 - **Static export → GitHub Pages।** নিজের backend নেই; SQL কোথাও চালানো হয় না।
 - **Progress `localStorage`-এ,** একমাত্র `app/hooks/useProgress.ts` দিয়ে; sync key থাকলে শেয়ার্ড Supabase-এ কপি যায়। নোটের ঘর নেই, ইচ্ছা করেই।
-- **`app/lib/plan.ts` আর `app/lib/guide.ts` server-only।**
+- **`app/lib/plan.ts`, `app/lib/guide.ts` আর `app/lib/design.ts` server-only।**
+- **diagram কাগজে।** সাইটে diagram-এর কোনো tool বা library নেই।
 - **Theme contract অলঙ্ঘনীয়, সাইট dark-only।** chassis `nestjs_learning` থেকে।
 - **স্ট্যাক:** Next.js 16, React 19, TypeScript, Tailwind v4, react-markdown।
 
@@ -34,12 +37,13 @@ rule-গুলো Supabase-এর `supabase-postgres-best-practices` skill থ�
 
 | ফাইল | Gist |
 |---|---|
-| [docs/00-rules.md](docs/00-rules.md) | লক্ষ্য, সত্যের উৎস, উৎসটা কী আর কী নয় (Reference লিংকের পরীক্ষা — ২টা 404), চিহ্ন, "আজ", কখন বসবেন ⏳, ১০′-এর বসা, ঝালাই, ⚑ দিন, গাইডের পাতা, যা করবেন না, দিন ০৩৫-এর পরে |
-| [docs/01-schema.md](docs/01-schema.md) | দিন ০০১–০০৭: `schema-` ৬; ⚑ ব্লকের তিনটা rule |
-| [docs/02-query-and-index.md](docs/02-query-and-index.md) | দিন ০০৮–০১৬: `query-` ৫ + `monitor-` ৩; ⚑ SQL না NoSQL, index কেন লাগে |
-| [docs/03-security-and-locking.md](docs/03-security-and-locking.md) | দিন ০১৭–০২৪: `security-` ৩ + `lock-` ৪; ⚑ ব্লকের তিনটা rule |
-| [docs/04-data-and-connections.md](docs/04-data-and-connections.md) | দিন ০২৫–০৩৫: `data-` ৪ + `conn-` ৪ + `advanced-` ২; ⚑ ব্লকের তিনটা rule |
+| [docs/00-rules.md](docs/00-rules.md) | লক্ষ্য, সত্যের উৎস, উৎসটা কী আর কী নয় (Reference লিংকের পরীক্ষা — ২টা 404), চিহ্ন, "আজ", কখন বসবেন ⏳, ১০′-এর বসা, design দিন, ঝালাই, ⚑ দিন, গাইডের পাতা, যা করবেন না, দিন ০৩৯-এর পরে |
+| [docs/01-schema.md](docs/01-schema.md) | দিন ০০১–০০৮: `schema-` ৬; design Pagila-র Catalog; ⚑ ব্লকের তিনটা rule |
+| [docs/02-query-and-index.md](docs/02-query-and-index.md) | দিন ০০৯–০১৮: `query-` ৫ + `monitor-` ৩; design Pagila-র মানুষ আর ঠিকানা; ⚑ SQL না NoSQL, index কেন লাগে |
+| [docs/03-security-and-locking.md](docs/03-security-and-locking.md) | দিন ০১৯–০২৭: `security-` ৩ + `lock-` ৪; design Pagila-র লেনদেন; ⚑ ব্লকের তিনটা rule |
+| [docs/04-data-and-connections.md](docs/04-data-and-connections.md) | দিন ০২৮–০৩৯: `data-` ৪ + `conn-` ৪ + `advanced-` ২; design `leave_management`-এর schema; ⚑ ব্লকের তিনটা rule |
 | [guide/](guide/) | ৩১টা rule ফাইল আর `_sections.md`, হুবহু; `README.md`-এ উৎস, commit আর লাইসেন্স |
+| [design/](design/) | Pagila-র `pagila-schema.sql` আর `LICENSE.txt` হুবহু; `parts.md` — কোন অংশে কোন table; `README.md`-এ উৎস আর commit |
 
 ## প্রজেক্ট-নির্দিষ্ট নিয়ম
 
@@ -50,6 +54,7 @@ rule-গুলো Supabase-এর `supabase-postgres-best-practices` skill থ�
 - `> **ব্লক শেষে:** …` · `### দিন ০০৭ · শিরোনাম` · `- [ ] ১০′ …` · `> **দিন শেষে:** …`
 - দিনের নম্বর সব ব্লক মিলিয়ে পরপর থাকতে হবে। না থাকলে build ভাঙে।
 - কাজে `(rule · schema-primary-keys)` = `guide/`-এর ঐ ফাইল। লেখাটা কার্ডে দেখায় না; তার জায়গায় আসে Incorrect SQL আর chip।
+- কাজে `(design · catalog)` = `design/parts.md`-এর ঐ অংশ। কার্ডে আসে অংশের `CREATE TABLE` আর design পাতার লিংক।
 - `⚑` = মাইলফলক, `🔁` = ঝালাই হবে, শেষে `🧠 (নাম · নাম)`। 🧠 নাম `app/lib/principles.ts`-এ থাকা নামগুলো থেকে।
 
 ### rule ফাইলের ছাঁচ
