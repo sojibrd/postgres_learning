@@ -4,7 +4,7 @@ Postgres-এর ৩১টা best practice, ৩৫ দিনে। দিনে 
 
 rule-গুলো Supabase-এর `supabase-postgres-best-practices` skill থেকে হুবহু নেওয়া — লেখক আর লাইসেন্স [guide/README.md](guide/README.md)-এ। গড়ন [nestjs_learning](https://sojibrd.github.io/nestjs_learning/)-এর মতো।
 
-**লাইভ:** https://sojibrd.github.io/postgres_learning/ — deploy-এর পরে; ২০২৬-১০-১২-এ এখনো হয়নি।
+**লাইভ:** https://sojibrd.github.io/postgres_learning/
 
 ## Functional Requirement
 

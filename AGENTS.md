@@ -14,7 +14,7 @@ Postgres-এর best practice-এর দিনভিত্তিক সাইট
 - **সময় ⏳** — দিনের ১০′ সপ্তাহে ৭ ঘণ্টার ভেতরে না বাইরে, আর বাকি তিন learning সাইটের সাথে একসাথে না পরপর — ব্যবহারকারীর উত্তর বাকি। `suggestedStart` তাই `null`; কোনো plan-এর ঘর থেকে সময় কাটবেন না।
 - 🧠 নাম → `app/lib/principles.ts`, `learning_to_learn`-এর ঐ ফাইলের কপি (৫৭টা বিষয়), লিংক ঐ সাইটের লাইভ Pages-এ। ওখানে বদলালে এখানেও।
 - Progress চার key (`postgres:v1:start`, `task`, `check`, `review`) — একমাত্র `app/hooks/useProgress.ts` দিয়ে; পঞ্চম key `postgres:v1:meta` শুধু sync-এর timestamp। কাজের লেখা বদলালে ঐ কাজের টিক হারায় (id = দিন + লেখার hash)।
-- **Cross-device sync** — বাকি সাইটের মতোই: `app/lib/supabase.ts`, `app/hooks/useSync(Key).ts`, `app/components/SyncSettings.tsx`, `app/sync/page.tsx` chassis থেকে হুবহু, নিজে থেকে বদলাবেন না। `site_prefix` = `SITE.storagePrefix` = `postgres`। `deploy.yml`-এর env নাম `NEXT_PUBLIC_SUPABASE_*` — বদলালে sync চুপচাপ মরে যাবে। **এখনো deploy হয়নি** (২০২৬-১০-১২)।
+- **Cross-device sync** — বাকি সাইটের মতোই: `app/lib/supabase.ts`, `app/hooks/useSync(Key).ts`, `app/components/SyncSettings.tsx`, `app/sync/page.tsx` chassis থেকে হুবহু, নিজে থেকে বদলাবেন না। `site_prefix` = `SITE.storagePrefix` = `postgres`। `deploy.yml`-এর env নাম `NEXT_PUBLIC_SUPABASE_*` — বদলালে sync চুপচাপ মরে যাবে। **লাইভ ২০২৬-১০-১২** — deployed chunk-এ Supabase-এর URL আর anon key `learning_to_learn`-এরটার সাথে মিলিয়ে দেখা, আর দুই device-এর push/pull একটা ফেলে-দেওয়া key দিয়ে পরীক্ষা করা (দুই দিকেই পাশ)।
 - `app/lib/plan.ts` আর `app/lib/guide.ts` server-only।
 - **Theme contract অলঙ্ঘনীয়**, সাইট **dark-only**। code block-এ syntax highlighting নেই — chassis-এর `.doc-prose pre`।
 
